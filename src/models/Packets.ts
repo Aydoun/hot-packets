@@ -12,7 +12,7 @@ export interface IPacket extends Document {
   views: number;
   creator: string;
   comments: IComment[];
-  status: Enumerator;
+  status: number;
 }
 
 interface IPacketModel extends Model<IPacket> {}
@@ -33,9 +33,9 @@ const PacketSchema = new Schema(
     creator: { type: Schema.Types.ObjectId, required: true },
     comments: { type: [Comments], default: [] },
     status: {
-      type: String,
-      enum: ["Active", "Inactive", "Banned"],
-      default: "Active",
+      type: Number,
+      enum: [1, 0, -1],
+      default: 1,
     },
   },
   { timestamps: true }
