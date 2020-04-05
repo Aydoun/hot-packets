@@ -3,10 +3,12 @@ import compression from "compression";
 import path from "path";
 import express, { Request, Response, NextFunction } from "express";
 import { ApplicationError } from "./errors";
-import routes from "./Routes";
+import TokenCheck from "./middleware/token-middleware";
+import routes from "./routes";
 
 const app = express();
 
+app.use(TokenCheck);
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
