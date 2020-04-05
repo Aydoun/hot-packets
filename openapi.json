@@ -1,12 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "API Service",
+    "title": "Packets API Documentation",
     "version": "1.0.0",
     "description": "API Service endpoints",
     "contact": {
-      "email": "sidhant@panda.fyi",
-      "name": "Sidhant Panda"
+      "email": "mohamed.amine.aydoun@gmail.com",
+      "name": "Mohamed Aydoun"
     }
   },
   "servers": [
@@ -16,36 +16,61 @@
   ],
   "tags": [
     {
-      "name": "book",
-      "description": "Books APIs"
+      "name": "packet",
+      "description": "Packets APIs"
     }
   ],
   "paths": {
-    "/book/add": {
+    "/packets": {
+      "get": {
+        "tags": ["packet"],
+        "summary": "Get all the User's created packets",
+        "operationId": "packet-get-all",
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "packets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PacketSchema"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
       "post": {
-        "tags": [
-          "book"
-        ],
-        "summary": "Add a book to the database",
-        "operationId": "book-add",
+        "tags": ["packet"],
+        "summary": "Add a packet to the database",
+        "operationId": "packet-add",
         "requestBody": {
-          "description": "New user signing up",
+          "description": "New packet coming up",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/DraftBookSchema"
+                "$ref": "#/components/schemas/NewPacketSchema"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Book was added",
+            "description": "Packet was added",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DraftBookSchema"
+                  "$ref": "#/components/schemas/PacketSchema"
                 }
               }
             }
@@ -56,64 +81,21 @@
         }
       }
     },
-    "/book/all": {
+    "/packets/{id}": {
       "get": {
-        "tags": [
-          "book"
-        ],
-        "summary": "Get all books in database",
-        "operationId": "book-get-all",
-        "responses": {
-          "200": {
-            "description": "Search results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "books": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/BookSchema"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error"
-          }
-        }
-      }
-    },
-    "/book/search": {
-      "get": {
-        "tags": [
-          "book"
-        ],
-        "summary": "Search books by name or author",
-        "operationId": "book-search",
+        "tags": ["packet"],
         "parameters": [
           {
-            "in": "query",
-            "name": "name",
-            "schema": {
-              "type": "string",
-              "default": "hitchhiker"
-            },
-            "description": "String containing full name or partial name of the book"
-          },
-          {
-            "in": "query",
-            "name": "author",
-            "schema": {
-              "type": "string",
-              "default": "douglas"
-            },
-            "description": "String containing full name or partial name of the author"
+            "name": "id",
+            "in": "path",
+            "description": "ID of packet to fetch",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
           }
         ],
+        "summary": "Get packet by id",
+        "operationId": "packet-get-one",
         "responses": {
           "200": {
             "description": "Search results",
@@ -121,13 +103,54 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "books": {
+                    "packets": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/BookSchema"
+                        "$ref": "#/components/schemas/PacketSchema"
                       }
                     }
                   }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["packet"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of packet to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "summary": "Update a packet in the database",
+        "operationId": "packet-update",
+        "requestBody": {
+          "description": "New packet Data coming up",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewPacketSchema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Packet was Updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PacketSchema"
                 }
               }
             }
@@ -141,23 +164,23 @@
   },
   "components": {
     "schemas": {
-      "DraftBookSchema": {
+      "NewPacketSchema": {
         "type": "object",
         "properties": {
-          "name": {
+          "title": {
             "type": "string",
             "example": "The Hitchhiker's Guide to the Galaxy"
           },
-          "author": {
+          "creator": {
             "type": "string",
-            "example": "Douglas Adams"
+            "example": "5d206fb4e858920d180a5cc0"
           }
         }
       },
-      "BookSchema": {
+      "PacketSchema": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/DraftBookSchema"
+            "$ref": "#/components/schemas/NewPacketSchema"
           }
         ],
         "type": "object",
@@ -165,6 +188,18 @@
           "_id": {
             "type": "string",
             "example": "5d7224d3b40b1a1a046697dd"
+          },
+          "views": {
+            "type": "number",
+            "example": 332
+          },
+          "likes": {
+            "type": "number",
+            "example": 124435
+          },
+          "status": {
+            "type": "number",
+            "example": 1
           }
         }
       }
