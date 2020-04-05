@@ -1,11 +1,12 @@
 import { Document, Model, Schema, model } from 'mongoose';
 
 export interface IUser extends Document {
-  title: string;
-  likes: number;
-  dislikes: number;
-  views: number;
-  creator: string;
+  name: string;
+  email: string;
+  password: string;
+  avatar: string;
+  privacy: any[];
+  packets: string[];
   status: number;
 }
 

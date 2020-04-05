@@ -1,7 +1,12 @@
 import jwt from 'jsonwebtoken';
+import unless from 'express-unless';
 import { Request, Response, NextFunction } from 'express';
 
-export default async (req: Request, res: Response, next: NextFunction) => {
+const TokenMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const token = req.headers['x-api-key'] as string;
 
   if (token) {
@@ -17,3 +22,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     next(new Error('No Token Provided'));
   }
 };
+
+TokenMiddleware.unless = unless;
+
+export default TokenMiddleware;
