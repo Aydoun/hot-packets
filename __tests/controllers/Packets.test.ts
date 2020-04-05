@@ -42,6 +42,7 @@ describe("App Test", () => {
   test("GET /packets should return list of packets", (done) => {
     request(app)
       .get("/packets")
+      .set("x-api-key", process.env.FAKE_TOKEN)
       .expect((res) => {
         const { packets } = res.body;
         expect(packets.length).toBe(2);
@@ -53,6 +54,7 @@ describe("App Test", () => {
   test("GET /packets/:id should one packet by id", (done) => {
     request(app)
       .get("/packets/5e89c7cfe6e5ff1027211c88")
+      .set("x-api-key", process.env.FAKE_TOKEN)
       .expect((res) => {
         const { packet } = res.body;
         expect(packet).toMatchObject(_docs[0]);
@@ -64,6 +66,7 @@ describe("App Test", () => {
     request(app)
       .post("/packets")
       .send(newDoc)
+      .set("x-api-key", process.env.FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;
         expect(result).toMatchObject(newDoc);
@@ -72,13 +75,17 @@ describe("App Test", () => {
   });
 
   test("POST /packets should fail if required fileds are not passed", (done) => {
-    request(app).post("/packets").expect(500, done);
+    request(app)
+      .post("/packets")
+      .set("x-api-key", process.env.FAKE_TOKEN)
+      .expect(500, done);
   });
 
   test("PUT /packets/:id should update packet", (done) => {
     request(app)
       .put("/packets/5e89c7cfe6e5ff1027211c88")
       .send(updatedDoc)
+      .set("x-api-key", process.env.FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;
         expect(result).toMatchObject(updatedDoc);

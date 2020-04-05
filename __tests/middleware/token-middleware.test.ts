@@ -1,8 +1,5 @@
 import { Request } from "jest-express/lib/request";
-import dotenv from "dotenv";
 import tokenMiddleware from "../../src/middleware/token-middleware";
-
-dotenv.config({ path: ".env.test" });
 
 let next: any;
 const res: any = {
