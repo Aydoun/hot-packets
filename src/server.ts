@@ -17,30 +17,22 @@ if (process.env.MONGO_URL == null) {
   });
   process.exit(1);
 } else {
-  app.listen(app.get("port"), (): void => {
-    console.log(
-      "\x1b[36m%s\x1b[0m", // eslint-disable-line
-      `🌏 Express server started at http://localhost:${app.get("port")}`
-    );
-    if (process.env.NODE_ENV === "development") {
+  mongoConnection.connect(() => {
+    app.listen(app.get("port"), (): void => {
       console.log(
         "\x1b[36m%s\x1b[0m", // eslint-disable-line
-        `⚙️  Swagger UI hosted at http://localhost:${app.get(
-          "port"
-        )}/dev/api-docs`
+        `🌏 Express server started at http://localhost:${app.get("port")}`
       );
-    }
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          "\x1b[36m%s\x1b[0m", // eslint-disable-line
+          `⚙️  Swagger UI hosted at http://localhost:${app.get(
+            "port"
+          )}/dev/api-docs`
+        );
+      }
+    });
   });
-  // mongoConnection.connect(() => {
-  //   app.listen(app.get('port'), (): void => {
-  //     console.log('\x1b[36m%s\x1b[0m', // eslint-disable-line
-  //       `🌏 Express server started at http://localhost:${app.get('port')}`);
-  //     if (process.env.NODE_ENV === 'development') {
-  //       console.log('\x1b[36m%s\x1b[0m', // eslint-disable-line
-  //         `⚙️  Swagger UI hosted at http://localhost:${app.get('port')}/dev/api-docs`);
-  //     }
-  //   });
-  // });
 }
 
 // Close the Mongoose connection, when receiving SIGINT
