@@ -20,7 +20,8 @@
     "dockerize": "./scripts/dev.sh",
     "dev": "tsc --project './tsconfig.json' --watch & NODE_ENV=development nodemon dist",
     "start": "node dist/src/server.js",
-    "test": "jest"
+    "test": "jest",
+    "format": "prettier --write '**/*.ts'"
   },
   "dependencies": {
     "body-parser": "1.19.0",
@@ -51,6 +52,7 @@
     "jest": "25.2.6",
     "jest-express": "1.11.3",
     "mockingoose": "2.13.2",
+    "prettier": "^2.0.2",
     "supertest": "4.0.2",
     "ts-jest": "25.3.0",
     "ts-node": "^8.8.1",

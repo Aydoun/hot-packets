@@ -1,16 +1,16 @@
-import { Router } from "express";
+import { Router } from 'express';
 import {
   getAll,
   registerPacket,
   updatePacket,
   getOne,
-} from "../controllers/packet";
+} from '../controllers/packet';
 
 const router = Router();
 
-router.get("/", getAll);
-router.get("/:id", getOne);
-router.post("/", registerPacket);
-router.put("/:id", updatePacket);
+router.get('/', getAll);
+router.get('/:id', getOne);
+router.post('/', registerPacket);
+router.put('/:id', updatePacket);
 
 export default router;

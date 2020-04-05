@@ -1,19 +1,19 @@
-import request from "supertest";
-import app from "../../src/app";
-import mockingoose from "mockingoose";
-import PacketsModel from "../../src/models/Packets";
+import request from 'supertest';
+import app from '../../src/app';
+import mockingoose from 'mockingoose';
+import PacketsModel from '../../src/models/Packets';
 const _docs = [
   {
-    _id: "5e89c7cfe6e5ff1027211c88",
-    title: "packet1",
+    _id: '5e89c7cfe6e5ff1027211c88',
+    title: 'packet1',
     likes: 0,
     views: 0,
     status: 1,
     comments: [] as any[],
   },
   {
-    _id: "5e89c7cfe6e5ff1027211c90",
-    title: "packet2",
+    _id: '5e89c7cfe6e5ff1027211c90',
+    title: 'packet2',
     likes: 2,
     views: 0,
     status: 1,
@@ -22,27 +22,27 @@ const _docs = [
 ];
 
 const newDoc = {
-  title: "new packet",
-  creator: "5d206fb4e858920d180a5cc0",
+  title: 'new packet',
+  creator: '5d206fb4e858920d180a5cc0',
 };
 
 const updatedDoc = {
-  title: "new title",
-  creator: "5d206fb4e858920d180a5cc0",
+  title: 'new title',
+  creator: '5d206fb4e858920d180a5cc0',
 };
 
-describe("App Test", () => {
+describe('Packets Test Suite', () => {
   beforeAll(() => {
-    mockingoose(PacketsModel).toReturn(_docs, "find");
-    mockingoose(PacketsModel).toReturn(_docs[0], "findOne");
-    mockingoose(PacketsModel).toReturn(newDoc, "save");
-    mockingoose(PacketsModel).toReturn(updatedDoc, "findOneAndUpdate");
+    mockingoose(PacketsModel).toReturn(_docs, 'find');
+    mockingoose(PacketsModel).toReturn(_docs[0], 'findOne');
+    mockingoose(PacketsModel).toReturn(newDoc, 'save');
+    mockingoose(PacketsModel).toReturn(updatedDoc, 'findOneAndUpdate');
   });
 
-  test("GET /packets should return list of packets", (done) => {
+  test('GET /packets should return list of packets', (done) => {
     request(app)
-      .get("/packets")
-      .set("x-api-key", process.env.FAKE_TOKEN)
+      .get('/packets')
+      .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
         const { packets } = res.body;
         expect(packets.length).toBe(2);
@@ -51,10 +51,10 @@ describe("App Test", () => {
       .expect(200, done);
   });
 
-  test("GET /packets/:id should one packet by id", (done) => {
+  test('GET /packets/:id should one packet by id', (done) => {
     request(app)
-      .get("/packets/5e89c7cfe6e5ff1027211c88")
-      .set("x-api-key", process.env.FAKE_TOKEN)
+      .get('/packets/5e89c7cfe6e5ff1027211c88')
+      .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
         const { packet } = res.body;
         expect(packet).toMatchObject(_docs[0]);
@@ -62,11 +62,11 @@ describe("App Test", () => {
       .expect(200, done);
   });
 
-  test("POST /packets should add new packet", (done) => {
+  test('POST /packets should add new packet', (done) => {
     request(app)
-      .post("/packets")
+      .post('/packets')
       .send(newDoc)
-      .set("x-api-key", process.env.FAKE_TOKEN)
+      .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;
         expect(result).toMatchObject(newDoc);
@@ -74,18 +74,18 @@ describe("App Test", () => {
       .expect(200, done);
   });
 
-  test("POST /packets should fail if required fileds are not passed", (done) => {
+  test('POST /packets should fail if required fileds are not passed', (done) => {
     request(app)
-      .post("/packets")
-      .set("x-api-key", process.env.FAKE_TOKEN)
+      .post('/packets')
+      .set('x-api-key', process.env.FAKE_TOKEN)
       .expect(500, done);
   });
 
-  test("PUT /packets/:id should update packet", (done) => {
+  test('PUT /packets/:id should update packet', (done) => {
     request(app)
-      .put("/packets/5e89c7cfe6e5ff1027211c88")
+      .put('/packets/5e89c7cfe6e5ff1027211c88')
       .send(updatedDoc)
-      .set("x-api-key", process.env.FAKE_TOKEN)
+      .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;
         expect(result).toMatchObject(updatedDoc);

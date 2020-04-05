@@ -1,4 +1,4 @@
-import { Document, Model, Schema, model } from "mongoose";
+import { Document, Model, Schema, model } from 'mongoose';
 
 interface IComment {
   test: string;
@@ -22,7 +22,7 @@ const Comments = new Schema(
     text: { type: String, required: true },
     creator: Schema.Types.ObjectId,
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const PacketSchema = new Schema(
@@ -38,16 +38,16 @@ const PacketSchema = new Schema(
       default: 1,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 PacketSchema.index({
-  title: "text",
+  title: 'text',
 });
 
 const PacketModel: IPacketModel = model<IPacket, IPacketModel>(
-  "packet",
-  PacketSchema
+  'packet',
+  PacketSchema,
 );
 
 export default PacketModel;

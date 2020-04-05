@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken";
-import { Request, Response, NextFunction } from "express";
+import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers["x-api-key"] as string;
+  const token = req.headers['x-api-key'] as string;
 
   if (token) {
     try {
@@ -11,9 +11,9 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       req.decoded = decoded;
       next();
     } catch (e) {
-      next(new Error("Invalid Token"));
+      next(new Error('Invalid Token'));
     }
   } else {
-    next(new Error("No Token Provided"));
+    next(new Error('No Token Provided'));
   }
 };
