@@ -31,7 +31,7 @@ export const updatePacket: RequestHandler = handleErrorMiddleware(
   async (req, res) => {
     const { id } = req.params;
 
-    const result = await PacketModel.updateOne({ _id: id }, req.body);
+    const result = await PacketModel.findByIdAndUpdate(id, req.body);
     res.send({ result });
   }
 );

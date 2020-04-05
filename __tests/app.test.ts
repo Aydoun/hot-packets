@@ -5,9 +5,6 @@ jest.mock("../src/models/Packets");
 describe("App Test", () => {
   test("GET /random-url should return 404", (done) => {
     request(app).get("/reset").expect(404, done);
-  });
-
-  test("GET /packets should return 200", (done) => {
-    request(app).get("/packets").expect(200, done);
+    request(app).get("/not-existant").expect(404, done);
   });
 });
