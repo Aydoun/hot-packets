@@ -9,6 +9,14 @@ export const getAll: RequestHandler = handleErrorMiddleware(
   }
 );
 
+export const getOne: RequestHandler = handleErrorMiddleware(
+  async (req, res) => {
+    const { id } = req.params;
+    const packet = await PacketModel.findById(id);
+    res.send({ packet });
+  }
+);
+
 export const registerPacket: RequestHandler = handleErrorMiddleware(
   async (req, res) => {
     const { title, creator } = req.body;
