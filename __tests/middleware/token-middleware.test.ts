@@ -51,4 +51,17 @@ describe('Request Token Middleware', () => {
     expect(next).toBeCalled();
     expect(next).toHaveBeenCalledWith();
   });
+
+  test('It Should Throw an error when token is expired', async () => {
+    const request: any = new Request('/packets', {
+      headers: {
+        'x-api-key': process.env.FAKE_TOKEN_EXPIRED,
+      },
+    });
+
+    await tokenMiddleware(request, res, next);
+
+    expect(next).toBeCalled();
+    expect(next).toHaveBeenCalledWith(new Error('Invalid Token'));
+  });
 });

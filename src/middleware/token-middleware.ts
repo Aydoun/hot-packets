@@ -2,6 +2,14 @@ import jwt from 'jsonwebtoken';
 import unless from 'express-unless';
 import { Request, Response, NextFunction } from 'express';
 
+interface IToken {
+  id: string;
+  expires: boolean;
+  iat: number;
+}
+
+const twoHours = 2 * 60 * 60;
+
 const TokenMiddleware = async (
   req: Request,
   res: Response,
@@ -11,7 +19,15 @@ const TokenMiddleware = async (
 
   if (token) {
     try {
-      const decoded = await jwt.verify(token, process.env.TOKEN_SECRET);
+      const decoded = (await jwt.verify(
+        token,
+        process.env.TOKEN_SECRET,
+      )) as IToken;
+      if (decoded.expires) {
+        if (Math.floor(new Date().getTime() / 1000) - decoded.iat > twoHours) {
+          next(new Error('Invalid Token'));
+        }
+      }
       // @ts-ignore
       req.decoded = decoded;
       next();

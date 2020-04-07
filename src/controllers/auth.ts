@@ -43,7 +43,7 @@ export const Login: RequestHandler = handleErrorMiddleware(async (req, res) => {
     else {
       res.send({
         ...omit(user, ['password', 'packets']),
-        token: generateToken(user._id),
+        token: generateToken(user._id, true),
       });
     }
   } else {
