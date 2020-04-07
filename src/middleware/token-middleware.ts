@@ -23,13 +23,13 @@ const TokenMiddleware = async (
         token,
         process.env.TOKEN_SECRET,
       )) as IToken;
+
       if (decoded.expires) {
         if (Math.floor(new Date().getTime() / 1000) - decoded.iat > twoHours) {
           next(new Error('Invalid Token'));
         }
       }
-      // @ts-ignore
-      req.decoded = decoded;
+      res.locals.decoded = decoded;
       next();
     } catch (e) {
       next(new Error('Invalid Token'));
