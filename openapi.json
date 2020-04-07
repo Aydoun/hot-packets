@@ -23,7 +23,7 @@
   "paths": {
     "/packets": {
       "get": {
-        "tags": ["packet"],
+        "tags": ["Packet"],
         "summary": "Get all the User's created packets",
         "operationId": "packet-get-all",
         "responses": {
@@ -50,7 +50,7 @@
         }
       },
       "post": {
-        "tags": ["packet"],
+        "tags": ["Packet"],
         "summary": "Add a packet to the database",
         "operationId": "packet-add",
         "requestBody": {
@@ -83,7 +83,7 @@
     },
     "/packets/{id}": {
       "get": {
-        "tags": ["packet"],
+        "tags": ["Packet"],
         "parameters": [
           {
             "name": "id",
@@ -120,7 +120,7 @@
         }
       },
       "put": {
-        "tags": ["packet"],
+        "tags": ["Packet"],
         "parameters": [
           {
             "name": "id",
@@ -151,6 +151,38 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PacketSchema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": ["User"],
+        "security": {
+          "ApiKeyAuth": []
+        },
+        "summary": "Get User by id",
+        "operationId": "user-get-one",
+        "responses": {
+          "200": {
+            "description": "Search results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "packets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/UserSchema"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -202,7 +234,35 @@
             "example": 1
           }
         }
+      },
+      "UserSchema": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "5d7224d3b40b1a1a046697dd"
+          },
+          "name": {
+            "type": "string",
+            "example": "Jack lebowsky"
+          },
+          "email": {
+            "type": "string",
+            "example": "jack.lebowsky@gmail.com"
+          },
+          "status": {
+            "type": "number",
+            "example": 1
+          }
+        }
       }
+    }
+  },
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "x-api-key"
     }
   }
 }

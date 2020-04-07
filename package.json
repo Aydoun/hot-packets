@@ -33,6 +33,7 @@
     "mongoose": "5.9.7",
     "nodemon": "2.0.2",
     "object.omit": "^3.0.0",
+    "path-to-regexp": "^6.1.0",
     "swagger-ui-express": "4.1.4",
     "winston": "3.2.1"
   },

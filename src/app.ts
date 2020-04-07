@@ -2,13 +2,18 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
+import { pathToRegexp } from 'path-to-regexp';
 import { ApplicationError } from './errors';
 import TokenCheck from './middleware/token-middleware';
 import routes from './routes';
 
 const app = express();
 
-app.use(TokenCheck.unless({ path: ['/auth/register', '/auth/login'] }));
+app.use(
+  TokenCheck.unless({
+    path: ['/auth/register', '/auth/login', /\/dev\/api-docs/i],
+  }),
+);
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
