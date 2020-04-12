@@ -1,5 +1,5 @@
 import { Document, Model, Schema, model } from 'mongoose';
-
+import { validateEmail } from '../utils/validators';
 export interface IUser extends Document {
   name: string;
   email: string;
@@ -21,6 +21,8 @@ const UserSchema = new Schema(
     email: {
       type: String,
       required: true,
+      unique: true,
+      validate: [validateEmail, 'Invalid Email'],
     },
     password: {
       type: String,

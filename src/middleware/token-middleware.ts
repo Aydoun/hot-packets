@@ -15,7 +15,7 @@ const TokenMiddleware = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const token = req.headers['x-api-key'] as string;
+  const token = (req.headers['x-api-key'] as string) || req.query.token;
 
   if (token) {
     try {

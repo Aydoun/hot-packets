@@ -4,6 +4,7 @@ import tokenMiddleware from '../../src/middleware/token-middleware';
 let next: any;
 const res: any = {
   send: jest.fn(),
+  locals: {},
 };
 
 describe('Request Token Middleware', () => {
