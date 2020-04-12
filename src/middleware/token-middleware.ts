@@ -4,8 +4,8 @@ import { Request, Response, NextFunction } from 'express';
 
 interface IToken {
   id: string;
-  expires: boolean;
   iat: number;
+  exp: number;
 }
 
 const twoHours = 2 * 60 * 60;
@@ -24,11 +24,11 @@ const TokenMiddleware = async (
         process.env.TOKEN_SECRET,
       )) as IToken;
 
-      if (decoded.expires) {
-        if (Math.floor(new Date().getTime() / 1000) - decoded.iat > twoHours) {
-          next(new Error('Invalid Token'));
-        }
-      }
+      // if (decoded.exp) {
+      //   if (Math.floor(new Date().getTime() / 1000) - decoded.exp > 0) {
+      //     next(new Error('Invalid Token'));
+      //   }
+      // }
       res.locals.decoded = decoded;
       next();
     } catch (e) {

@@ -45,3 +45,9 @@ export const Login: RequestHandler = handleErrorMiddleware(async (req, res) => {
     throw new Error('Not Enough Params');
   }
 });
+
+export const verifyToken: RequestHandler = handleErrorMiddleware(
+  async (_, res) => {
+    res.send({});
+  },
+);
