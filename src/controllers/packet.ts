@@ -1,13 +1,12 @@
 import { RequestHandler } from 'express';
 import handleErrorMiddleware from '../middleware/handle-error-middleware';
 import PacketModel from '../models/Packets.model';
+import UserModel from '../models/Users.model';
 
-export const getAll: RequestHandler = handleErrorMiddleware(
-  async (req, res) => {
-    const packets = await PacketModel.find({ status: 1 });
-    res.send({ packets });
-  },
-);
+export const getAll: RequestHandler = handleErrorMiddleware(async (_, res) => {
+  const packets = await PacketModel.find({ status: 1 });
+  res.send({ packets });
+});
 
 export const getOne: RequestHandler = handleErrorMiddleware(
   async (req, res) => {
@@ -19,10 +18,15 @@ export const getOne: RequestHandler = handleErrorMiddleware(
 
 export const registerPacket: RequestHandler = handleErrorMiddleware(
   async (req, res) => {
-    const { title, creator } = req.body;
+    const {
+      decoded: { id },
+    } = res.locals;
+    const { title } = req.body;
 
-    const newPacket = new PacketModel({ title, creator });
+    const newPacket = new PacketModel({ title, creator: id });
     const result = await newPacket.save();
+    await UserModel.findByIdAndUpdate(id, { $push: { packets: result._id } });
+
     res.send({ result });
   },
 );

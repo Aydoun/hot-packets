@@ -1,31 +1,33 @@
 import { RequestHandler } from 'express';
-import omit from 'object.omit';
 import handleErrorMiddleware from '../middleware/handle-error-middleware';
 import UserModel from '../models/Users.model';
 import PacketsModel from '../models/Packets.model';
 
 export const getOneUser: RequestHandler = handleErrorMiddleware(
-  async (req, res) => {
+  async (_, res) => {
     const {
       decoded: { id },
     } = res.locals;
-    const user = await UserModel.findById(id).lean();
-    const filteredUser = omit(user, ['password', 'packets']);
+    const user = await UserModel.findById(id, '-password -packets -privacy');
 
-    res.send({ result: filteredUser });
+    res.send({ result: user });
   },
 );
 
 export const getUserPackets: RequestHandler = handleErrorMiddleware(
-  async (req, res) => {
+  async (_, res) => {
     const {
       decoded: { id },
     } = res.locals;
-    // return UserModel.find({ _id: { $in: [mainUser, ...toArray] } })
-    const packetsList = await PacketsModel.find({
-      _id: { $in: [id] },
-    });
+    const { packets } = await UserModel.findById(id);
+    const packetsList = await PacketsModel.find(
+      {
+        _id: { $in: packets },
+        creator: id,
+      },
+      '-comments -creator',
+    );
 
-    res.send({ result: [] });
+    res.send({ result: packetsList });
   },
 );

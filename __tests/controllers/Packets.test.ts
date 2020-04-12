@@ -1,7 +1,7 @@
 import request from 'supertest';
 import app from '../../src/app';
 import mockingoose from 'mockingoose';
-import PacketsModel from '../../src/models/Packets';
+import PacketsModel from '../../src/models/Packets.model';
 const _docs = [
   {
     _id: '5e89c7cfe6e5ff1027211c88',
