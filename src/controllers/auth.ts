@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import bcrypt from 'bcrypt';
 import omit from 'object.omit';
 import handleErrorMiddleware from '../middleware/handle-error-middleware';
-import UserModel from '../models/Users';
+import UserModel from '../models/Users.model';
 import { generateToken } from '../utils';
 
 export const Register: RequestHandler = handleErrorMiddleware(
@@ -43,7 +43,7 @@ export const Login: RequestHandler = handleErrorMiddleware(async (req, res) => {
     else {
       res.send({
         ...omit(user, ['password', 'packets']),
-        token: generateToken(user._id, true),
+        token: generateToken(user._id),
       });
     }
   } else {

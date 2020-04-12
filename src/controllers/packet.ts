@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import handleErrorMiddleware from '../middleware/handle-error-middleware';
-import PacketModel from '../models/packets';
+import PacketModel from '../models/Packets.model';
 
 export const getAll: RequestHandler = handleErrorMiddleware(
   async (req, res) => {

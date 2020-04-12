@@ -18,7 +18,7 @@
     "build": "tsc",
     "dockerize": "./scripts/dev.sh",
     "dev": "tsc --project './tsconfig.json' --watch & NODE_ENV=development nodemon dist",
-    "start": "node dist/src/server.js",
+    "start": "nodemon dist/src/server.js",
     "test": "jest",
     "format": "prettier --write '**/*.ts'"
   },

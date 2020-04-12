@@ -2,7 +2,6 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
-import { pathToRegexp } from 'path-to-regexp';
 import { ApplicationError } from './errors';
 import TokenCheck from './middleware/token-middleware';
 import routes from './routes';
