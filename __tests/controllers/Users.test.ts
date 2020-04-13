@@ -30,17 +30,17 @@ const packets = [
   },
 ];
 
+const apiPrefix = '/api/v1';
+
 describe('USers Test Suite', () => {
   beforeAll(() => {
     mockingoose(UsersModel).toReturn(_docs, 'findOne');
     mockingoose(PacketsModel).toReturn(packets, 'find');
-    // mockingoose(PacketsModel).toReturn(newDoc, 'save');
-    // mockingoose(PacketsModel).toReturn(updatedDoc, 'findOneAndUpdate');
   });
 
   it('GET /user should fetch the user basic profile', (done) => {
     request(app)
-      .get('/user')
+      .get(apiPrefix + '/user')
       .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;
@@ -52,7 +52,7 @@ describe('USers Test Suite', () => {
 
   it('GET /user/packets should fetch the user created Packets', (done) => {
     request(app)
-      .get('/user/packets')
+      .get(apiPrefix + '/user/packets')
       .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;

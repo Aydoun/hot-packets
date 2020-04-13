@@ -8,8 +8,6 @@ interface IToken {
   exp: number;
 }
 
-const twoHours = 2 * 60 * 60;
-
 const TokenMiddleware = async (
   req: Request,
   res: Response,

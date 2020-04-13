@@ -31,6 +31,8 @@ const updatedDoc = {
   creator: '5d206fb4e858920d180a5cc0',
 };
 
+const apiPrefix = '/api/v1';
+
 describe('Packets Test Suite', () => {
   beforeAll(() => {
     mockingoose(PacketsModel).toReturn(_docs, 'find');
@@ -41,7 +43,7 @@ describe('Packets Test Suite', () => {
 
   test('GET /packets should return list of packets', (done) => {
     request(app)
-      .get('/packets')
+      .get(apiPrefix + '/packets')
       .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
         const { packets } = res.body;
@@ -53,7 +55,7 @@ describe('Packets Test Suite', () => {
 
   test('GET /packets/:id should one packet by id', (done) => {
     request(app)
-      .get('/packets/5e89c7cfe6e5ff1027211c88')
+      .get(apiPrefix + '/packets/5e89c7cfe6e5ff1027211c88')
       .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
         const { packet } = res.body;
@@ -64,7 +66,7 @@ describe('Packets Test Suite', () => {
 
   test('POST /packets should add new packet', (done) => {
     request(app)
-      .post('/packets')
+      .post(apiPrefix + '/packets')
       .send(newDoc)
       .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
@@ -74,16 +76,16 @@ describe('Packets Test Suite', () => {
       .expect(200, done);
   });
 
-  test('POST /packets should fail if required fileds are not passed', (done) => {
+  test('POST /packets should fail if required fields are not passed', (done) => {
     request(app)
-      .post('/packets')
+      .post(apiPrefix + '/packets')
       .set('x-api-key', process.env.FAKE_TOKEN)
       .expect(500, done);
   });
 
   test('PUT /packets/:id should update packet', (done) => {
     request(app)
-      .put('/packets/5e89c7cfe6e5ff1027211c88')
+      .put(apiPrefix + '/packets/5e89c7cfe6e5ff1027211c88')
       .send(updatedDoc)
       .set('x-api-key', process.env.FAKE_TOKEN)
       .expect((res) => {
