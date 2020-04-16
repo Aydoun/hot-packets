@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import systemPath from 'path';
 import multer from 'multer';
 import uuidv1 from 'uuid/v1';
 import FileCompressionMiddleware from './file-compress-middleware';
@@ -25,7 +24,6 @@ const PostUpload = (req: Request, res: Response, next: NextFunction) => {
       error: 'No File been provided!',
     });
   }
-  console.log('post upload');
   next();
 };
 

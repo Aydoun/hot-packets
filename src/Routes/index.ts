@@ -27,7 +27,7 @@ const swaggerOptions = {
 router.use('/packets', PacketRouter);
 router.use('/auth', AuthRouter);
 router.use('/user', UserRouter);
-router.use('/file', FileRouter);
+// router.use('/file', FileRouter);
 
 // Dev routes
 if (process.env.NODE_ENV === 'development') {
