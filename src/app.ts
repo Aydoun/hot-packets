@@ -7,10 +7,16 @@ import TokenCheck from './middleware/token-middleware';
 import routes from './routes';
 
 const app = express();
+const apiPrefix = '/api/v1';
 
 app.use(
   TokenCheck.unless({
-    path: ['/auth/register', '/auth/login', /\/dev\/api-docs/i],
+    path: [
+      apiPrefix + '/auth/register',
+      apiPrefix + '/auth/login',
+      /\/dev\/api-docs/i,
+      /\/public/i,
+    ],
   }),
 );
 app.use(compression());
@@ -20,13 +26,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000);
 
 app.use(
-  express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }),
+  '/public',
+  express.static('public', {
+    maxAge: 31557600000,
+  }),
 );
-
-app.use(routes);
+app.use(apiPrefix, routes);
 
 app.use(
-  (err: ApplicationError, req: Request, res: Response, next: NextFunction) => {
+  (err: ApplicationError, _: Request, res: Response, next: NextFunction) => {
     if (res.headersSent) {
       return next(err);
     }

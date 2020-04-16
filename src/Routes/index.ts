@@ -4,6 +4,7 @@ import apiSpec from '../../openapi.json';
 import PacketRouter from './packets';
 import AuthRouter from './auth';
 import UserRouter from './users';
+import FileRouter from './files';
 
 const router = Router();
 
@@ -26,6 +27,7 @@ const swaggerOptions = {
 router.use('/packets', PacketRouter);
 router.use('/auth', AuthRouter);
 router.use('/user', UserRouter);
+// router.use('/file', FileRouter);
 
 // Dev routes
 if (process.env.NODE_ENV === 'development') {
