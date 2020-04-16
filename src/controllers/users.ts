@@ -31,3 +31,18 @@ export const getUserPackets: RequestHandler = handleErrorMiddleware(
     res.send({ result: packetsList });
   },
 );
+
+export const updateAvatar: RequestHandler = handleErrorMiddleware(
+  async (req, res) => {
+    const {
+      decoded: { id },
+    } = res.locals;
+    const { HOST, PORT } = process.env;
+    const { path } = req.file;
+    const url = `${HOST}:${PORT}/${path}`;
+
+    await UserModel.findByIdAndUpdate(id, { avatar: url });
+
+    res.send({ result: url });
+  },
+);

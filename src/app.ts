@@ -15,6 +15,7 @@ app.use(
       apiPrefix + '/auth/register',
       apiPrefix + '/auth/login',
       /\/dev\/api-docs/i,
+      /\/public/i,
     ],
   }),
 );
@@ -25,9 +26,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', process.env.PORT || 3000);
 
 app.use(
-  express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }),
+  '/public',
+  express.static('public', {
+    maxAge: 31557600000,
+  }),
 );
-
 app.use(apiPrefix, routes);
 
 app.use(
