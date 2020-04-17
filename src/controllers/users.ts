@@ -46,3 +46,15 @@ export const updateAvatar: RequestHandler = handleErrorMiddleware(
     res.send({ result: url });
   },
 );
+
+export const updateUser: RequestHandler = handleErrorMiddleware(
+  async (req, res) => {
+    const {
+      decoded: { id },
+    } = res.locals;
+
+    await UserModel.findByIdAndUpdate(id, req.body);
+
+    res.send({ result: req.body });
+  },
+);

@@ -30,12 +30,17 @@ const packets = [
   },
 ];
 
+const updatedDoc = {
+  name: 'new-name',
+};
+
 const apiPrefix = '/api/v1';
 
 describe('USers Test Suite', () => {
   beforeAll(() => {
     mockingoose(UsersModel).toReturn(_docs, 'findOne');
     mockingoose(PacketsModel).toReturn(packets, 'find');
+    mockingoose(UsersModel).toReturn(updatedDoc, 'findOneAndUpdate');
   });
 
   it('GET /user should fetch the user basic profile', (done) => {
@@ -58,6 +63,14 @@ describe('USers Test Suite', () => {
         const { result } = res.body;
         expect(result).toMatchObject(packets);
       })
+      .expect(200, done);
+  });
+
+  test('PUT /user should update user info', (done) => {
+    request(app)
+      .put(apiPrefix + '/user')
+      .send({ name: 'new-user' })
+      .set('x-api-key', process.env.FAKE_TOKEN)
       .expect(200, done);
   });
 });
