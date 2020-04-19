@@ -4,6 +4,13 @@ import mockingoose from 'mockingoose';
 import UsersModel from '../../src/models/Users.model';
 import PacketsModel from '../../src/models/Packets.model';
 
+jest.mock('bcrypt', () => {
+  return {
+    compare: () => true,
+    hash: () => 'hash',
+  };
+});
+
 const _docs = {
   _id: '5e89c7cfe6e5ff1027211c88',
   name: 'user-test',
@@ -35,6 +42,7 @@ const updatedDoc = {
 };
 
 const apiPrefix = '/api/v1';
+const { FAKE_TOKEN } = process.env;
 
 describe('USers Test Suite', () => {
   beforeAll(() => {
@@ -46,7 +54,7 @@ describe('USers Test Suite', () => {
   it('GET /user should fetch the user basic profile', (done) => {
     request(app)
       .get(apiPrefix + '/user')
-      .set('x-api-key', process.env.FAKE_TOKEN)
+      .set('x-api-key', FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;
 
@@ -58,7 +66,7 @@ describe('USers Test Suite', () => {
   it('GET /user/packets should fetch the user created Packets', (done) => {
     request(app)
       .get(apiPrefix + '/user/packets')
-      .set('x-api-key', process.env.FAKE_TOKEN)
+      .set('x-api-key', FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;
         expect(result).toMatchObject(packets);
@@ -70,7 +78,15 @@ describe('USers Test Suite', () => {
     request(app)
       .put(apiPrefix + '/user')
       .send({ name: 'new-user' })
-      .set('x-api-key', process.env.FAKE_TOKEN)
+      .set('x-api-key', FAKE_TOKEN)
+      .expect(200, done);
+  });
+
+  test('PUT /user/password should update user password', (done) => {
+    request(app)
+      .put(apiPrefix + '/user/password')
+      .send({ name: 'new-user' })
+      .set('x-api-key', FAKE_TOKEN)
       .expect(200, done);
   });
 });

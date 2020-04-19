@@ -32,6 +32,7 @@ const updatedDoc = {
 };
 
 const apiPrefix = '/api/v1';
+const { FAKE_TOKEN } = process.env;
 
 describe('Packets Test Suite', () => {
   beforeAll(() => {
@@ -44,7 +45,7 @@ describe('Packets Test Suite', () => {
   test('GET /packets should return list of packets', (done) => {
     request(app)
       .get(apiPrefix + '/packets')
-      .set('x-api-key', process.env.FAKE_TOKEN)
+      .set('x-api-key', FAKE_TOKEN)
       .expect((res) => {
         const { packets } = res.body;
         expect(packets.length).toBe(2);
@@ -56,7 +57,7 @@ describe('Packets Test Suite', () => {
   test('GET /packets/:id should one packet by id', (done) => {
     request(app)
       .get(apiPrefix + '/packets/5e89c7cfe6e5ff1027211c88')
-      .set('x-api-key', process.env.FAKE_TOKEN)
+      .set('x-api-key', FAKE_TOKEN)
       .expect((res) => {
         const { packet } = res.body;
         expect(packet).toMatchObject(_docs[0]);
@@ -68,7 +69,7 @@ describe('Packets Test Suite', () => {
     request(app)
       .post(apiPrefix + '/packets')
       .send(newDoc)
-      .set('x-api-key', process.env.FAKE_TOKEN)
+      .set('x-api-key', FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;
         expect(result).toMatchObject(newDoc);
@@ -79,7 +80,7 @@ describe('Packets Test Suite', () => {
   test('POST /packets should fail if required fields are not passed', (done) => {
     request(app)
       .post(apiPrefix + '/packets')
-      .set('x-api-key', process.env.FAKE_TOKEN)
+      .set('x-api-key', FAKE_TOKEN)
       .expect(500, done);
   });
 
@@ -87,7 +88,7 @@ describe('Packets Test Suite', () => {
     request(app)
       .put(apiPrefix + '/packets/5e89c7cfe6e5ff1027211c88')
       .send(updatedDoc)
-      .set('x-api-key', process.env.FAKE_TOKEN)
+      .set('x-api-key', FAKE_TOKEN)
       .expect((res) => {
         const { result } = res.body;
         expect(result).toMatchObject(updatedDoc);
