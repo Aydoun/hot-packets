@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import { compare, hash } from 'bcrypt';
 import handleErrorMiddleware from '../middleware/handle-error-middleware';
 import UserModel from '../models/Users.model';
 import PacketsModel from '../models/Packets.model';
@@ -56,5 +57,27 @@ export const updateUser: RequestHandler = handleErrorMiddleware(
     await UserModel.findByIdAndUpdate(id, req.body);
 
     res.send({ result: req.body });
+  },
+);
+
+export const updateUserPassword: RequestHandler = handleErrorMiddleware(
+  async (req, res) => {
+    const {
+      decoded: { id },
+    } = res.locals;
+    const { oldPassword, newPassword } = req.body;
+
+    const user = await UserModel.findOne({ _id: id, status: { $gt: 1 } });
+    if (!user) new Error('User Not Found');
+
+    const isMatch = await compare(oldPassword, user.password);
+    if (!isMatch) throw new Error('Wrong Password');
+
+    const hashedPassword = await hash(newPassword, 10);
+    await UserModel.findByIdAndUpdate(id, {
+      password: hashedPassword,
+    });
+
+    res.send({ result: 'ok' });
   },
 );

@@ -32,8 +32,7 @@ export const Login: RequestHandler = handleErrorMiddleware(async (req, res) => {
 
   if (email && password) {
     const user = await UserModel.findOne({ email, status: { $gt: 1 } });
-    const isPasswordMatch = bcrypt.compare(password, user.password);
-
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) throw new Error('Authentication failed');
     else {
       res.send({
