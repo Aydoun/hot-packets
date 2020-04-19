@@ -4,6 +4,12 @@ import mockingoose from 'mockingoose';
 import UsersModel from '../../src/models/Users.model';
 
 const apiPrefix = '/api/v1';
+jest.mock('bcrypt', () => {
+  return {
+    compare: () => true,
+    hash: () => 'hash',
+  };
+});
 
 describe('Auth Test Suite', () => {
   beforeAll(() => {
@@ -22,7 +28,21 @@ describe('Auth Test Suite', () => {
       .expect(500, done);
   });
 
-  it('POST /auth/login should register a new user', (done) => {
+  it('POST /auth/register should register a new user', (done) => {
+    request(app)
+      .post(apiPrefix + '/auth/register')
+      .send({
+        email: 'user@gmail.com',
+        password: 'password1234',
+        name: 'user-name',
+      })
+      .expect((res) => {
+        expect(res.body).toHaveProperty('token');
+      })
+      .expect(200, done);
+  });
+
+  it('POST /auth/login should authenticate a new user', (done) => {
     request(app)
       .post(apiPrefix + '/auth/login')
       .send({ email: 'user@gmail.com', password: 'password1234' })
